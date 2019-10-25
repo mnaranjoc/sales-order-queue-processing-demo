@@ -8,9 +8,35 @@ namespace ConsoleApplication1
 {
     class ReportPrintProcessor
     {
+        int invoicesQty;
+
         public void prompt()
         {
+            this.getNumberOfInvoices();
+        }
 
+        public void getNumberOfInvoices()
+        {
+            bool isValid = false;            
+
+            while (!isValid)
+            {
+                Console.Clear();
+                Console.WriteLine("Type the number of invoices generated:");
+
+                if (int.TryParse(Console.ReadLine(), out invoicesQty))
+                {
+                    isValid = true;
+                }
+                else
+                {
+                    Console.WriteLine("That's an invalid number, please try again. (Press any key)");
+                    Console.ReadLine();
+                }
+
+            }
+
+            Console.WriteLine("Thank you!");
         }
 
         public bool validate()
@@ -36,6 +62,8 @@ namespace ConsoleApplication1
             {
                 processor.run();
             }
+
+            Console.ReadLine();
         }
     }
 }
