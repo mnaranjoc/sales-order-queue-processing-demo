@@ -35,8 +35,6 @@ namespace ConsoleApplication1
                 }
 
             }
-
-            Console.WriteLine("Thank you!");
         }
 
         public bool validate()
