@@ -8,33 +8,66 @@ namespace ConsoleApplication1
 {
     class ReportPrintProcessor
     {
-        int invoicesQty;
+        List<Invoice> invoices = new List<Invoice>();
+        List<string> customerList = new List<string>();
 
-        public void prompt()
+        public void init()
         {
-            this.getNumberOfInvoices();
+            getInvoicesList();
+            getCustomerList();
+            printDocuments();
         }
 
-        public void getNumberOfInvoices()
+        public void printDocuments()
         {
-            bool isValid = false;            
 
-            while (!isValid)
+        }
+
+        public void getCustomerList()
+        {
+            
+            var customers = from c in invoices
+                            group c by c.CustId into newGroup
+                            select newGroup;
+
+            foreach(var cust in customers)
             {
-                Console.Clear();
-                Console.WriteLine("Type the number of invoices generated:");
-
-                if (int.TryParse(Console.ReadLine(), out invoicesQty))
-                {
-                    isValid = true;
-                }
-                else
-                {
-                    Console.WriteLine("That's an invalid number, please try again. (Press any key)");
-                    Console.ReadLine();
-                }
-
+                customerList.Add(cust.Key);
             }
+        }
+
+        public void getInvoicesList()
+        {
+            Random custRand = new Random();
+            var customerIdNameList = createCustomerList();
+
+            for (int i = 0; i < 1500; i++)
+            {
+                invoices.Add(new Invoice
+                {
+                    CustId = customerIdNameList.Keys.ElementAt(custRand.Next(0, customerIdNameList.Count)),
+                    InvoiceAmount = 999,
+                    InvoiceDate = DateTime.Today
+                });
+            }
+        }
+
+        public Dictionary<string, string> createCustomerList()
+        {
+            var customerIdNameList = new Dictionary<string, string>();
+
+            customerIdNameList.Add("0001", "James");
+            customerIdNameList.Add("0002", "John");
+            customerIdNameList.Add("0003", "Robert");
+            customerIdNameList.Add("0004", "Michael");
+            customerIdNameList.Add("0005", "William");
+            customerIdNameList.Add("0006", "David");
+            customerIdNameList.Add("0007", "Richard");
+            customerIdNameList.Add("0008", "Joseph");
+            customerIdNameList.Add("0009", "Charles");
+            customerIdNameList.Add("0010", "Thomas");
+
+            return customerIdNameList;
         }
 
         public bool validate()
@@ -51,10 +84,9 @@ namespace ConsoleApplication1
 
         static void Main(string[] args)
         {
-            ReportPrintProcessor processor;
+            ReportPrintProcessor processor = new ReportPrintProcessor();
 
-            processor = new ReportPrintProcessor();
-            processor.prompt();
+            processor.init();
 
             if (processor.validate())
             {
